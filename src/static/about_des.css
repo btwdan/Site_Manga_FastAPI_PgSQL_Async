@@ -1,0 +1,16 @@
+.main p{
+    font-size: 1.145em;
+    margin-bottom: 20px;
+    margin-left: 200px;
+    margin-right: 250px;
+}
+
+.main p p{
+    text-decoration: none;
+    color: black;
+}
+
+.content{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}

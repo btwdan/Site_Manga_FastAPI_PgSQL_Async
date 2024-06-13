@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content1 %}
+    {% if not user %}
+        <a href="{{ url_for('pages:login') }}">Войти/Зарегистрироваться</a>
+    {% else %}
+        <a href="{{ url_for('pages:login') }}">Профиль</a>
+    {% endif %}
+{% endblock %}
+
+{% block content2 %}
+<div style="margin-top: 100px; margin-bottom: 65px;" class="container mx-auto px-4 py-8">
+    <h2 class="text-2xl font-bold mb-4 text-center">Вход</h2>
+    <form id="login-form" class="max-w-md mx-auto">
+        <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2" for="email">
+                Почта
+            </label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" name="username" type="email" placeholder="Введите почту">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2" for="password">
+                Пароль
+            </label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" name="password" type="password" placeholder="Введите пароль">
+        </div>
+        <div class="flex justify-center mb-4">
+            <button id="login-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                Войти
+            </button>
+            <a href="{{ url_for('pages:register') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-2">
+                Зарегистрироваться
+            </a>
+        </div>
+        <div style="margin-bottom: 103px"></div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('login-form');
+
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // предотвращаем стандартное поведение формы
+
+                const formData = new FormData(form);
+                formData.append('grant_type', 'password');
+                formData.append('scope', '');
+                formData.append('client_id', '');
+                formData.append('client_secret', '');
+
+                const data = new URLSearchParams(formData);
+
+                fetch('/auth/jwt/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: data.toString()
+                })
+                .then(response => {
+                    console.log('Response:', response);
+                    if (!response.ok) {
+                        throw new Error('Ошибка при входе');
+                    }
+                    const contentType = response.headers.get('content-type');
+                    console.log('Content-Type:', contentType);
+                    if (contentType && contentType.includes('application/json')) {
+                        return response.json();
+                    } else {
+                        return response.text().then(text => {
+                            window.location.href = '/pages/main';
+                            console.error('Получен неожиданный тип ответа:', text);
+                            throw new Error(`Ожидался JSON, получен: ${text}`);
+                        });
+                    }
+                })
+                .then(data => {
+                    // Обработка успешного ответа
+                    console.log('Успешный вход:', data);
+                    window.location.href = '/pages/main';
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                });
+            });
+        } else {
+            console.error('Element with id "login-form" not found.');
+        }
+    });
+</script>
+{% endblock %}

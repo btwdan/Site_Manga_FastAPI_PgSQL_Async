@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content1 %}
+    {% if not user %}
+        <a href="{{ url_for('pages:login') }}">Войти/Зарегистрироваться</a>
+    {% else %}
+        <a href="{{ url_for('pages:profile') }}">{{ user.username }}</a>
+    {% endif %}
+{% endblock %}
+
+{% block content2 %}
+<h1 style="margin-top: 15px; margin-bottom: 15px;" class="text-center">Приветствуем тебя на самой крутой платформе для прочтения манги!😊</h1>
+<div class="flex flex-wrap justify-center">
+    {% if content %}
+        {% for article in content %}
+            <div class="bg-white shadow-md rounded-lg p-6 mb-6 mx-4 w-1/4">
+                <img width="300px" height="600px" src="{{ url_for('static', path='/manga/' ~ article['path'] ~ '/1/P00001.jpg') }}">
+                <h2 class="text-2xl font-bold mb-2">{{ article['title'] }}</h2>
+                <p class="text-gray-700 mb-2">Автор: {{ article['author'] }}</p>
+                <p class="text-gray-600 mb-4">Категория: {{ article['category'] }}</p>
+                <p class="text-gray-600 mb-2">{{ article['description'] }}</p>
+                <a href="{{ url_for('pages:chapters_choose', name=article['path']) }}" class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Читать мангу
+                </a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p style="margin-top: 280px; margin-bottom: 280px;" >Пока что на сайте нет манги но вы можете стать первым кто ее добавит - <a style="color: green;" href="{{ url_for('pages:add_content') }}">тык!</a></p>
+    {% endif %}
+</div>
+{% endblock %}

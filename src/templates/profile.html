@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const logoutForm = document.getElementById('logout-form');
+        if (logoutForm) {
+            logoutForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                fetch('/auth/jwt/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = "{{ url_for('pages:login') }}";
+                    } else {
+                        console.error('Failed to logout');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        } else {
+            console.error('Element with id "logout-form" not found.');
+        }
+    });
+</script>
+{% endblock %}
+
+{% block content1 %}
+    {% if not user %}
+        <a href="{{ url_for('pages:login') }}">Войти/Зарегистрироваться</a>
+    {% else %}
+        <a href="{{ url_for('pages:login') }}">{{ user.username }}</a>
+    {% endif %}
+{% endblock %}
+
+{% block content2 %}
+<div style="margin-top: 100px; margin-bottom: 65px;" class="container mx-auto px-4 py-8">
+    <h2 class="text-2xl font-bold mb-4 text-left">Профиль</h2>
+    <div class="profile-info text-left">
+        <h2 class="text-2xl font-bold mb-2">{{ user.username }}</h2>
+        <p class="mb-4">Email: {{ user.email }}</p>
+    </div>
+    <div style="padding-top: 200px; padding-bottom: 53px;" class="flex justify-left">
+        <form id="logout-form" class="max-w-md" action="/auth/jwt/logout" method="post">
+            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Выйти из аккаунта</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

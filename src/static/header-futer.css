@@ -1,0 +1,181 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+@font-face {
+    font-family: mainFont;
+    font-weight: normal;
+    font-style: normal;
+    src: url("fonts/main_font.ttf");
+}
+
+.container-fluid{
+    width: 100%;
+    background: #9999ff
+}
+
+.container{
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.d-flex{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+body{
+    font-family: "mainFont", Arial, Helvetica, sans-serif;
+    width: 100%;
+    font-size: 20px;
+}
+
+header > .container{
+    padding: 5px 30px;
+}
+
+header .container .menu a{
+    font-size: 0.875em;
+    text-decoration: none;
+    color: white;
+    margin: 40px;
+}
+
+header .container .menu a:hover, 
+header .container .menu a.active{
+    color: yellow;
+    font-weight: 600;
+    padding-bottom: 7px;
+    border-bottom: 3px solid yellow;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #9999ff;
+  min-width: 10px;
+  z-index: 1;
+  padding: 5px;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 5px 5px;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.dropdown-content a:hover {
+  background-color: #9999ff;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+header form div{
+    justify-content: center;
+    padding: 10px 20px;
+    border: 1px solid black;
+    border-radius: 50px;
+    width: 100px;
+    background-color: #0000cc;
+}
+
+header .profile{
+    align-items: flex-start;
+}
+
+header .profile img{
+    margin-right: 10px;
+}
+
+header .profile div a{
+    font-size: 0.750em;
+    color: black;
+}
+
+footer{
+    background-color: #0000cc;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+footer .container{
+    align-items: flex-start;
+}
+
+footer .left{
+    align-items: flex-start;
+}
+
+footer .left nav{
+    margin-top: 30px;
+    margin-left: 100px;
+}
+
+footer .left nav a{
+    display: block;
+    font-size: 0.875em;
+    color: black;
+    margin-bottom: 15px;
+    text-decoration: none;
+}
+
+footer .left nav a{
+    color: white;
+}
+
+footer .left nav a:hover,
+footer .left nav a.active{
+    color: yellow;
+    font-weight: 600;
+}
+
+footer .right form div{
+    justify-content: center;
+    border-bottom: 1px solid black;
+}
+
+footer .right > div{
+    text-align: center;
+    font-size: 0.875;
+    color: black;
+    margin-top: 50px;
+    margin-bottom: 0px;
+    margin-right: 50px;
+}
+
+footer .right .box{
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    margin: 16px 16px 0px;
+}
+
+footer .right .telega{
+    background: url('images/tg.png') no-repeat;
+    background-size: cover;
+}
+
+footer .right .vk{
+    background: url('images/VK_.png') no-repeat;
+    background-size: cover;
+
+}
+
+footer .copyrigts{
+    text-align: center;
+    color: black;
+    font-size: 0.750em;
+    margin-top: 10px;
+}

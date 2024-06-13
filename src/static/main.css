@@ -1,0 +1,92 @@
+.blok1{
+    justify-content: left;
+    align-items: flex-start;
+}
+
+.blok1 .menu{
+    width: 200px;
+}
+
+.blok1 .menu a{
+    display: block;
+    text-decoration: none;
+    font-size: 1.125em;
+    color: black;
+    margin-bottom: 5px;
+    padding: 12px 25px;
+}
+
+
+.blok1 .menu a:hover,
+.blok1 .menu a.active{
+    color: white;
+    background-color: black;
+    padding: 12px 25px;
+    border-radius: 20px;
+}
+
+.blok1 .items{
+    padding-left: 25px;
+}
+
+.blok1 .items .sort p{
+    color: black;
+    font-size: 0.850em;
+    margin-top: 12px;
+    margin-left: 25px;
+}
+
+.blok1 .items .sort p a{
+    display: inline-block;
+}
+
+.blok1 .items .boxes{
+    flex-wrap: wrap;
+}
+
+.blok1 .items .boxes .box{
+    margin-bottom: 28px;
+    margin-left: 40px;
+}
+
+.box figure figcaption{
+    padding-left:28x;
+    color: black;
+}
+
+.box figure figcaption {
+    font-size: 0.850em;
+}
+
+.box figure figcaption p span{
+    font-size: 1.100em;
+    font-weight: 600;
+}
+
+.box figure .title{
+    color: black;
+    font-size: 0.900em;
+    margin-top: 10px;
+}
+
+.box button{
+    width: 100%;
+    padding: 12px;
+    border-radius: 20px;
+    color: white;
+    background-color: black;
+    margin-top: 15px;
+    border: none;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box button:hover{
+    cursor: pointer;
+}
+
+.blok1 .end{
+    color: white;
+    margin-bottom: 40px;
+}

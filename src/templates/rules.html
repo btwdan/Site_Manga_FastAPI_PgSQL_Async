@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/about_des.css') }}" />
+{% endblock %}
+
+{% block content1 %}
+    {% if not user %}
+        <a href="{{ url_for('pages:login') }}">Войти/Зарегистрироваться</a>
+    {% else %}
+        <a href="{{ url_for('pages:profile') }}">{{ user.username }}</a>
+    {% endif %}
+{% endblock %}
+
+{% block content2 %}
+<div>
+    <main class="main">
+        <div class="content" style="margin-top: 165px; margin-bottom: 180px;">
+            <p>Приветствую тебя {{ user.username }} очень рад что ты хочешь поддержать наш сайт, но для начала нужно ознакомиться с некоторыми правилами!</p>
+            <p>Правило первое: нужно загружать .rar архив внутри которого будут картинки с твоей мангой!</p>
+            <p>Правило второе: название архива должно соответствовать названию манги и написано англискими буквами без пробела вместо пробела можешь использовать "_"!</p>
+            <p>В целом это все что мы хотели до тебя донести, если ты загрузишь мангу не того формата то админ просто удалит ее)</p>
+        </div>
+    </main>
+</div>
+{% endblock %}

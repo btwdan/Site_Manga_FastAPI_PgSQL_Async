@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Манга</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/header-futer.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/main.css') }}" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <header class="container-fluid">
+        <div class="container d-flex">
+            <a href="{{ url_for('pages:main') }}">
+                <img width="80" height="80" src="{{ url_for('static', path='/images/logo.png') }}" alt="logo" />
+            </a>
+            <nav class="menu">
+                <a class="{% if request.url.path == url_for('pages:main') %}active{% endif %}" href="{{ url_for('pages:main') }}">Главная</a>
+                <a class="{% if request.url.path == url_for('pages:choose') %}active{% endif %}" href="{{ url_for('pages:choose') }}">Добавить мангу</a>
+                <div class="dropdown">
+                  <a class="{% if request.url.path == url_for('pages:main') %}active{% endif %}" href="{{ url_for('pages:main') }}">Категории</a>
+                  <div class="dropdown-content">
+                    <a href="{{ url_for('pages:categories', type=1) }}">Романтика</a>
+                    <a href="{{ url_for('pages:categories', type=2)}}">Комедия</a>
+                    <a href="{{ url_for('pages:categories', type=3) }}">Драмма</a>
+                    <a href="{{ url_for('pages:categories', type=4) }}">Приключения</a>
+                  </div>
+                </div>
+                <a class="{% if request.url.path == url_for('pages:search') %}active{% endif %}" href="{{ url_for('pages:search') }}">Поиск</a>
+            </nav>
+            <div class="profile d-flex">
+                <img width="30px" height="30px" src="{{ url_for('static', path='/images/Profile.png') }}" alt="login"/>
+                <div>
+                    {% block content1 %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <hr>
+    <div id="content">
+        {% block content2 %}{% endblock %}
+    </div>
+    <hr>
+
+    <footer class="container-fluid">
+        <div class="container d-flex">
+            <div class="left d-flex">
+                <figure>
+                    <a href="{{ url_for('pages:main') }}">
+                        <img width="100" height="100" src="{{ url_for('static', path='/images/logo.png') }}" alt="logo" />
+                    </a>
+                </figure>
+                <nav class="menu">
+                    <a class="{% if request.url.path == url_for('pages:about') %}active{% endif %}" href="{{ url_for('pages:about') }}">О нас</a>
+                    <a class="{% if request.url.path == url_for('pages:contacts') %}active{% endif %}" href="{{ url_for('pages:contacts') }}">Контакты</a>
+                </nav>
+            </div>
+            <div class="right">
+                <div>
+                    <p style="color: white;">Наши социальные сети:</p>
+                    <a href="https://vk.com/ikun22849" class="box telega"></a>
+                    <a href="https://vk.com/ikun22849" class="box vk"></a>
+                </div>
+            </div>
+        </div>
+        <div class="container copyrigts">
+            <p style="color: white;">Все права защищены &copy; 2024</p>
+        </div>
+    </footer>
+</body>
+</html>

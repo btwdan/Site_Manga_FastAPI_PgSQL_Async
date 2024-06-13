@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content1 %}
+    {% if not user %}
+        <a href="{{ url_for('pages:login') }}">Войти/Зарегистрироваться</a>
+    {% else %}
+        <a href="{{ url_for('pages:profile') }}">{{ user.username }}</a>
+    {% endif %}
+{% endblock %}
+
+{% block content2 %}
+<div class="container mx-auto px-4 py-8">
+    <h2 class="text-2xl font-bold mb-4 text-center">Выберите главу</h2>
+    <div class="flex flex-wrap justify-left">
+        {% for number in chapter_numbers %}
+            <a href="{{ url_for('pages:view', name=manga_name, chapter=number) }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-20 rounded m-2">
+                Глава {{ number }}
+            </a>
+        {% else %}
+            <p class="text-center">Главы не найдены.</p>
+        {% endfor %}
+    </div>
+               Вот тут меняй значения
+    <div style="margin-bottom: 200px" class="flex justify-center mt-4">
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('chapter-form');
+        if (!form) {
+            console.error('Element with id "chapter-form" not found.');
+        }
+    });
+</script>
+{% endblock %}

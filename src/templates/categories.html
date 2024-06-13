@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content1 %}
+    {% if not user %}
+        <a href="{{ url_for('pages:login') }}">Войти/Зарегистрироваться</a>
+    {% else %}
+        <a href="{{ url_for('pages:profile') }}">{{ user.username }}</a>
+    {% endif %}
+{% endblock %}
+
+{% block content2 %}
+<div class="flex flex-wrap justify-center">
+    {% if content %}
+        {% for article in content %}
+            <div class="bg-white shadow-md rounded-lg p-6 mb-6 mx-4 w-1/4">
+                <img src="{{ url_for('static', path='/manga/' ~ article['path'] ~ '/1/P00001.jpg') }}">
+                <h2 class="text-2xl font-bold mb-2">{{ article['title'] }}</h2>
+                <p class="text-gray-700 mb-2">Автор: {{ article['author'] }}</p>
+                <p class="text-gray-600 mb-4">Категория: {{ article['category'] }}</p>
+                <p class="text-gray-600 mb-2">{{ article['description'] }}</p>
+                <a href="{{ url_for('pages:view', name=article['path']) }}" class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Читать мангу
+                </a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-center" style="margin-top: 209px; margin-bottom: 203px">Пока что в моей базе данных нет манги с таким жанром но скоро будет😉</p>
+    {% endif %}
+</div>
+{% endblock %}

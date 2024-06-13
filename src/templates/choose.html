@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content1 %}
+    {% if not user %}
+        <a href="{{ url_for('pages:login') }}">Войти/Зарегистрироваться</a>
+    {% else %}
+        <a href="{{ url_for('pages:profile') }}">{{ user.username }}</a>
+    {% endif %}
+{% endblock %}
+
+{% block content2 %}
+<div class="container mx-auto px-4 py-8">
+    <h2 class="text-2xl font-bold mb-4 text-center">Управление Мангой</h2>
+    {% if not user %}
+        <p class="text-black-500 text-center" style="margin-top: 246px; margin-bottom: 250px;">Необходимо <a href="{{ url_for('pages:login') }}" style="color: green; font: bold;">зарегистрироваться</a> для управления мангой!</p>
+    {% else %}
+        <div class="flex justify-center space-x-4">
+            <a href="{{ url_for('pages:add_content') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Добавить Мангу
+            </a>
+            <a href="{{ url_for('pages:add_chapter') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Добавить Главу Манги
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

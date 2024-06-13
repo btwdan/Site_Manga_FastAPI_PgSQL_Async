@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content1 %}
+    {% if not user %}
+        <a href="{{ url_for('pages:login') }}">Войти/Зарегистрироваться</a>
+    {% else %}
+        <a href="{{ url_for('pages:profile') }}">{{ user.username }}</a>
+    {% endif %}
+{% endblock %}
+
+{% block content2 %}
+<div class="container mx-auto px-4 py-8">
+    <h2 class="text-2xl font-bold mb-4 text-center">Добавить мангу</h2>
+        <p class="text-black-500 text-center" style="margin-top: 61px; margin-bottom: 65px;">Ваша манга успешно добавлена, желаете <a href="{{ url_for('pages:add_content') }}" style="color: green">загрузить</a> еще одну?</p>
+</div>
+{% endblock %}

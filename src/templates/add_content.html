@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block content1 %}
+    {% if not user %}
+        <a href="{{ url_for('pages:login') }}">Войти/Зарегистрироваться</a>
+    {% else %}
+        <a href="{{ url_for('pages:profile') }}">{{ user.username }}</a>
+    {% endif %}
+{% endblock %}
+
+{% block content2 %}
+<div class="container mx-auto px-4 py-8">
+    <h2 class="text-2xl font-bold mb-4 text-center">Добавить мангу</h2>
+    {% if not user %}
+        <p class="text-black-500 text-center" style="margin-top: 246px; margin-bottom: 250px;">Необходимо <a href="{{ url_for('pages:login') }}" style="color: green; font: bold;">зарегистрироваться</a> для добавления статьи!</p>
+    {% else %}
+        <p class="text-black-500 text-center" style="margin-top: 50px; margin-bottom: 50px;">Просим ознакомиться с правилами <a href="{{ url_for('pages:rules') }}" style="color: green; font: bold;">загрузки</a> манги на сайт!</p>
+        <form id="upload-form" class="max-w-2xl mx-auto" method="post" enctype="multipart/form-data">
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="article-title">
+                    Введите название манги
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="article-title" name="title" type="text" placeholder="Введите название манги" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="article-about">
+                    Краткое описание
+                </label>
+                <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="article-about" name="about" placeholder="Введите краткое описание" required></textarea>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="article-category">
+                    Категория
+                </label>
+                <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="article-category" name="category" required>
+                    <option value="">Выберите категорию</option>
+                    <option value="1">Романтика</option>
+                    <option value="3">Драмма</option>
+                    <option value="4">Приключение</option>
+                    <option value="2">Комедия</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="article-file">Загрузите мангу</label>
+                <input type="file" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="article-file" name="article_file" accept=".rar" required>
+            </div>
+            <div style="margin-bottom: 37px; margin-top: 40px;" class="flex justify-center">
+                <button id="upload-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                    Добавить мангу
+                </button>
+            </div>
+            <div id="message" class="mt-4 text-center"></div>
+        </form>
+    {% endif %}
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('upload-form');
+
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // предотвращаем стандартное поведение формы
+
+                const formData = new FormData(form);
+
+                fetch('/manga/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        return response.json().then(err => { throw err; });
+                    }
+                })
+                .then(data => {
+                    // Обработка успешного ответа
+                    const messageElement = document.getElementById('message');
+                    messageElement.textContent = 'Манга успешно загружена. Перенаправление на главную страницу...';
+                    messageElement.classList.add('text-green-500');
+                    setTimeout(() => {
+                        window.location.href = 'pages/sucses_add_content';
+                    }, 2000); // Задержка перед перенаправлением
+                })
+                .catch(error => {
+                    const messageElement = document.getElementById('message');
+                    if (error.detail) {
+                        messageElement.textContent = 'Ошибка: ' + error.detail;
+                    } else {
+                        messageElement.textContent = 'Ошибка: ' + JSON.stringify(error);
+                    }
+                    messageElement.classList.add('text-red-500');
+                });
+            });
+        } else {
+            console.error('Element with id "upload-form" not found.');
+        }
+    });
+</script>
+{% endblock %}

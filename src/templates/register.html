@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content1 %}
+    {% if not user %}
+        <a href="{{ url_for('pages:login') }}">Войти/Зарегистрироваться</a>
+    {% else %}
+        <a href="{{ url_for('pages:login') }}">{{ user.username }}</a>
+    {% endif %}
+{% endblock %}
+
+{% block content2 %}
+<div style="margin-bottom: 100px; margin-top: 70px;" class="container mx-auto px-4 py-8">
+    <h2 class="text-2xl font-bold mb-4 text-center">Регистрация</h2>
+    <form id="registration-form" class="max-w-md mx-auto">
+        <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2" for="username">
+                Логин
+            </label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Введите логин">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2" for="email">
+                Почта
+            </label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="Введите адрес электронной почты">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2" for="password">
+                Пароль
+            </label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="Введите пароль">
+        </div>
+        <div class="flex justify-center">
+            <button id="register-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                Зарегистрироваться
+            </button>
+        </div>
+        <div id="message" class="mt-4 text-center"></div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('registration-form');
+
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // предотвращаем стандартное поведение формы
+
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const username = document.getElementById('username').value;
+
+                const messageElement = document.getElementById('message');
+
+                if (!email || !password || !username) {
+                    messageElement.textContent = 'Пожалуйста, заполните все поля.';
+                    messageElement.classList.add('text-red-500');
+                    return;
+                }
+
+                const data = {
+                    email: email,
+                    password: password,
+                    username: username,
+                    is_active: true,
+                    is_superuser: false,
+                    is_verified: true,
+                    role_id: 1
+                };
+
+                fetch('/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        return response.json().then(err => { throw err; });
+                    }
+                })
+                .then(data => {
+                    // Обработка успешного ответа
+                    messageElement.textContent = 'Успешная регистрация. Перенаправление на страницу входа...';
+                    messageElement.classList.add('text-green-500');
+                    setTimeout(() => {
+                        window.location.href = '/pages/login';
+                    }, 2000); // Задержка перед перенаправлением
+                })
+                .catch(error => {
+                    if (error.detail) {
+                        messageElement.textContent = 'Мы уже знаем такую почту, давай другую)';
+                    } else {
+                        messageElement.textContent = 'Ошибка: ' + JSON.stringify(error);
+                    }
+                    messageElement.classList.add('text-red-500');
+                });
+            });
+        } else {
+            console.error('Element with id "registration-form" not found.');
+        }
+    });
+</script>
+{% endblock %}

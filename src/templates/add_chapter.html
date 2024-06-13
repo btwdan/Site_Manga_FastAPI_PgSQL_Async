@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block content1 %}
+    {% if not user %}
+        <a href="{{ url_for('pages:login') }}">Войти/Зарегистрироваться</a>
+    {% else %}
+        <a href="{{ url_for('pages:profile') }}">{{ user.username }}</a>
+    {% endif %}
+{% endblock %}
+
+{% block content2 %}
+<div class="container mx-auto px-4 py-8">
+    <h2 class="text-2xl font-bold mb-4 text-center">Добавить главу</h2>
+    {% if not user %}
+        <p class="text-black-500 text-center" style="margin-top: 246px; margin-bottom: 250px;">Необходимо <a href="{{ url_for('pages:login') }}" style="color: green; font: bold;">зарегистрироваться</a> для добавления главы!</p>
+    {% else %}
+        <form id="upload-form" class="max-w-2xl mx-auto" method="post" enctype="multipart/form-data">
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="manga-id">
+                    Выберите мангу
+                </label>
+                <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="manga-id" name="manga_id" required>
+                    <option value="">Выберите мангу</option>
+                    {% for manga in mangas %}
+                        <option value="{{ manga.id }}">{{ manga.head }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="chapter-number">
+                    Выберите номер главы
+                </label>
+                <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="chapter-number" name="chapter_number" required>
+                    {% for i in range(1, 101) %}
+                        <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="chapter-file">Загрузите главу</label>
+                <input type="file" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="chapter-file" name="chapter_file" accept=".rar" required>
+            </div>
+            <div style="margin-bottom: 37px; margin-top: 40px;" class="flex justify-center">
+                <button id="upload-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                    Добавить главу
+                </button>
+            </div>
+            <div id="message" class="mt-4 text-center"></div>
+        </form>
+    {% endif %}
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('upload-form');
+
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // предотвращаем стандартное поведение формы
+
+                const formData = new FormData(form);
+
+                fetch('/chapter/add', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.text();
+                    } else {
+                        return response.json().then(err => { throw err; });
+                    }
+                })
+                .then(data => {
+                    // Обработка успешного ответа
+                    const messageElement = document.getElementById('message');
+                    messageElement.innerHTML = data;
+                    messageElement.classList.add('text-green-500');
+                    setTimeout(() => {
+                        window.location.href = '/pages/success_add_chapter';
+                    }, 2000); // Задержка перед перенаправлением
+                })
+                .catch(error => {
+                    const messageElement = document.getElementById('message');
+                    if (error.detail) {
+                        messageElement.textContent = 'Ошибка: ' + error.detail;
+                    } else {
+                        messageElement.textContent = 'Ошибка: ' + JSON.stringify(error);
+                    }
+                    messageElement.classList.add('text-red-500');
+                });
+            });
+        } else {
+            console.error('Element with id "upload-form" not found.');
+        }
+    });
+</script>
+{% endblock %}

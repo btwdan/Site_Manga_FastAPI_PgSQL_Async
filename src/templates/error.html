@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/about_des.css') }}" />
+{% endblock %}
+
+{% block content1 %}
+    {% if not user %}
+        <a href="{{ url_for('pages:login') }}">Войти/Зарегистрироваться</a>
+    {% else %}
+        <a href="{{ url_for('pages:profile') }}">{{ user.username }}</a>
+    {% endif %}
+{% endblock %}
+
+{% block content2 %}
+<div>
+    <main class="main">
+        <div class="content" style="margin-top: 150px; margin-bottom: 149px;">
+            <p>Получилось в тг - <a href="https://vk.com/ikun22849" style="margin-top: 150px; color: red;">тык!</a></p>
+            <p>Наше сообщество в вк - <a href="https://vk.com/ikun22849" style="margin-bottom: 150px; color: red;">тык!</a></p>
+            <p>Для предложений и обратной связи, пожалуйста, свяжитесь с нами через <a href="mailto:email@example.com" style="color: red;">email@example.com</a>.</p>
+        </div>
+    </main>
+</div>
+{% endblock %}
